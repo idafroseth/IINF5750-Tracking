@@ -1,0 +1,50 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MapsActivity"
+    android:orientation="horizontal"
+    android:id="@+id/map"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map_element"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/map_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/transparent_selector"
+            android:textColor="@color/white"
+            android:text="Cancel"
+            android:id="@+id/cancel_location"
+            android:layout_weight="0.66" />
+        <view
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background ="@color/white"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/transparent_selector"
+            android:textColor="@color/white"
+            android:text="Set Coordinate"
+            android:id="@+id/set_coordinate2"
+            android:drawableLeft="@drawable/ic_location"
+            android:layout_weight="0.34" />
+    </LinearLayout>
+
+
+</FrameLayout>
