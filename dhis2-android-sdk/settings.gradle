@@ -25,5 +25,5 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-include ':app'
-include ':app', '..:dhis2-android-sdk:app'
+
+include ':app', ':models', ':ui', ':core', ':persistence', ':network', ':core-java', ':core-android'

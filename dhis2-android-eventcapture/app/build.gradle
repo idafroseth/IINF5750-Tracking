@@ -36,7 +36,7 @@ android {
     defaultConfig {
         applicationId "org.hisp.dhis.android.eventcapture"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 21
         versionCode 15
         versionName "0.2.7"
     }
