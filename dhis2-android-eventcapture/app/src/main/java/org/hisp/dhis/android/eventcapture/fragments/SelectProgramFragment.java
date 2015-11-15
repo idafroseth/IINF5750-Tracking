@@ -32,6 +32,7 @@ package org.hisp.dhis.android.eventcapture.fragments;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,19 +48,22 @@ import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.events.OnRowClick;
 import org.hisp.dhis.android.sdk.events.OnTrackerItemClick;
 import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.loaders.DbLoader;
 import org.hisp.dhis.android.sdk.persistence.models.BaseSerializableModel;
+import org.hisp.dhis.android.sdk.ui.adapters.rows.events.EventItemRow;
+import org.hisp.dhis.android.sdk.ui.adapters.rows.events.TrackedEntityInstanceItemRow;
+import org.hisp.dhis.android.sdk.ui.fragments.eventdataentry.EventDataEntryFragment;
+import org.hisp.dhis.android.sdk.ui.fragments.selectprogram.SelectProgramFragmentForm;
+import org.hisp.dhis.android.sdk.ui.fragments.dataentry.DataEntryFragment;
+import org.hisp.dhis.android.sdk.persistence.loaders.DbLoader;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.ui.adapters.AbsAdapter;
 import org.hisp.dhis.android.sdk.ui.adapters.EventAdapter;
-import org.hisp.dhis.android.sdk.ui.adapters.rows.events.EventItemRow;
-import org.hisp.dhis.android.sdk.ui.fragments.dataentry.DataEntryFragment;
-import org.hisp.dhis.android.sdk.ui.fragments.eventdataentry.EventDataEntryFragment;
-import org.hisp.dhis.android.sdk.ui.fragments.selectprogram.SelectProgramFragmentForm;
+import org.hisp.dhis.android.sdk.ui.adapters.rows.events.EventRow;
 import org.hisp.dhis.android.sdk.ui.views.FloatingActionButton;
 import org.hisp.dhis.android.sdk.utils.UiUtils;
+import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,10 +136,9 @@ public class SelectProgramFragment extends org.hisp.dhis.android.sdk.ui.fragment
     }
 
     @Override
-    protected Program.ProgramType[] getProgramTypes() {
-        return new Program.ProgramType[] {
-                Program.ProgramType.SINGLE_EVENT_WITHOUT_REGISTRATION,
-                Program.ProgramType.WITHOUT_REGISTRATION
+    protected ProgramType[] getProgramTypes() {
+        return new ProgramType[] {
+                ProgramType.WITHOUT_REGISTRATION
         };
     }
 

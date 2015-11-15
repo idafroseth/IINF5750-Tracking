@@ -63,13 +63,14 @@ android {
 }
 
 dependencies {
+    // Google libraries.
+    compile 'com.google.android.gms:play-services-base:8.3.0'
+    compile 'com.google.android.gms:play-services-maps:8.3.0'
+    compile 'com.android.support:support-v4:23.1.0'
     // Android support libraries.
     compile 'com.android.support:appcompat-v7:22.1.0'
     compile 'com.android.support:cardview-v7:22.1.0'
     compile 'com.android.support:design:22.2.0'
-   // compile 'com.google.android.gms:play-services:8.1.0'
-    compile 'com.google.android.gms:play-services-base:8.1.+'
-    compile 'com.google.android.gms:play-services-maps:8.1.+'
     // Square libraries.
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
@@ -99,4 +100,5 @@ dependencies {
     compile('commons-validator:commons-validator:1.4.0') {
         exclude module: 'commons-logging'
     }
+    compile 'com.google.guava:guava-collections:r03'
 }

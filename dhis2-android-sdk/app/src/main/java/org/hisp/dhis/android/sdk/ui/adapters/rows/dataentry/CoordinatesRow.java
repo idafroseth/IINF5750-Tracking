@@ -28,6 +28,7 @@
 
 package org.hisp.dhis.android.sdk.ui.adapters.rows.dataentry;
 
+import android.app.Activity;
 import android.location.Location;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
@@ -46,6 +47,7 @@ import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.ui.adapters.rows.AbsTextWatcher;
 import org.hisp.dhis.android.sdk.ui.adapters.rows.events.OnDetailedInfoButtonClick;
+import org.hisp.dhis.android.sdk.ui.dialogs.MapsSelectionFragment;
 import org.hisp.dhis.android.sdk.ui.fragments.dataentry.RowValueChangedEvent;
 
 public final class CoordinatesRow extends Row {
@@ -108,7 +110,7 @@ public final class CoordinatesRow extends Row {
         private final EditText latitude;
         private final EditText longitude;
         private final ImageButton captureCoords;
-        private final ImageButton captureMapCoords;
+        private final ImageButton openMapDialog;
         private final View detailedInfoButton;
         private final LatitudeWatcher latitudeWatcher;
         private final LongitudeWatcher longitudeWatcher;
@@ -124,18 +126,23 @@ public final class CoordinatesRow extends Row {
             latitude = (EditText) view.findViewById(R.id.latitude_edittext);
             longitude = (EditText) view.findViewById(R.id.longitude_edittext);
             captureCoords = (ImageButton) view.findViewById(R.id.capture_coordinates);
-            captureMapCoords = (ImageButton) view.findViewById(R.id.capture_map_coordinates);
+            openMapDialog = (ImageButton) view.findViewById(R.id.capture_map_coordinates);
             this.detailedInfoButton = detailedInfoButton;
 
             /* text watchers and click listener */
             latitudeWatcher = new LatitudeWatcher(latitude, latitudeMessage);
             longitudeWatcher = new LongitudeWatcher(longitude, longitudeMessage);
-            onButtonClickListener = new OnCaptureCoordsClickListener(latitude, longitude);
+
+            android.app.FragmentManager fm = null;
+            if(view.getContext() instanceof Activity) {
+                fm = ((Activity) view.getContext()).getFragmentManager();
+            }
+            onButtonClickListener = new OnCaptureCoordsClickListener(fm, latitude, longitude);
 
             latitude.addTextChangedListener(latitudeWatcher);
             longitude.addTextChangedListener(longitudeWatcher);
             captureCoords.setOnClickListener(onButtonClickListener);
-            captureMapCoords.setOnClickListener(onButtonClickListener);
+            openMapDialog.setOnClickListener(onButtonClickListener);
         }
 
         public void updateViews(Event event) {
@@ -230,20 +237,27 @@ public final class CoordinatesRow extends Row {
     private static class OnCaptureCoordsClickListener implements View.OnClickListener {
         private final EditText mLatitude;
         private final EditText mLongitude;
+        private final android.app.FragmentManager fragmentManager;
 
-        public OnCaptureCoordsClickListener(EditText latitude, EditText longitude) {
+        public OnCaptureCoordsClickListener(android.app.FragmentManager fragmentManager,
+                                            EditText latitude, EditText longitude) {
+            this.fragmentManager = fragmentManager;
             mLatitude = latitude;
             mLongitude = longitude;
         }
 
         @Override
         public void onClick(View v) {
+            System.out.println("Clicked the button...the id is " + v.getId());
             if (v.getId() == R.id.capture_coordinates) {
                 Location location = GpsController.getLocation();
                 mLatitude.setText(String.valueOf(location.getLatitude()));
                 mLongitude.setText(String.valueOf(location.getLongitude()));
-            }else if (v.getId() == R.id.capture_map_coordinates){
-                //Start the MapActivity here..
+            } else if (v.getId() == R.id.capture_map_coordinates) {
+                System.out.println("This window should have launched");
+                MapsSelectionFragment mapsSelectionFragment = new MapsSelectionFragment();
+                mapsSelectionFragment.show(fragmentManager);
+                System.out.println("Testing final launch");
             }
         }
     }
