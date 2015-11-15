@@ -2,9 +2,6 @@
 *.apk
 *.ap_
 
-# intellij files
-.idea
-
 # Files for the Dalvik VM
 *.dex
 
@@ -28,3 +25,6 @@ proguard/
 
 # Log Files
 *.log
+
+.idea
+*.iml
