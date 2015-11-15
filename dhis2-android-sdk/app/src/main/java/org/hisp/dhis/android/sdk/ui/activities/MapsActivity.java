@@ -1,10 +1,12 @@
 package org.hisp.dhis.android.sdk.ui.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,11 +17,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import org.hisp.dhis.android.sdk.R;
 
 public class MapsActivity extends FragmentActivity {
     private Button selectPositionBtn;
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GoogleMap mMap; // Might be null if Google Play services APK is not available
     private GoogleApiClient mGoogleApiClient;
     Marker clickedPosition;
     Button setLocationButton;
