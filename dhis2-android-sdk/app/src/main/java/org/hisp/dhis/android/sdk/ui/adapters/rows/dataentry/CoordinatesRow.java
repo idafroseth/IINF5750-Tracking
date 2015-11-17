@@ -137,6 +137,7 @@ public final class CoordinatesRow extends Row {
             if(view.getContext() instanceof Activity) {
                 fm = ((Activity) view.getContext()).getFragmentManager();
             }
+
             onButtonClickListener = new OnCaptureCoordsClickListener(fm, latitude, longitude);
 
             latitude.addTextChangedListener(latitudeWatcher);
@@ -255,7 +256,7 @@ public final class CoordinatesRow extends Row {
                 mLongitude.setText(String.valueOf(location.getLongitude()));
             } else if (v.getId() == R.id.capture_map_coordinates) {
                 System.out.println("This window should have launched");
-                MapsSelectionFragment mapsSelectionFragment = new MapsSelectionFragment();
+                MapsSelectionFragment mapsSelectionFragment =  MapsSelectionFragment.newInstance(mLatitude,mLongitude);
                 mapsSelectionFragment.show(fragmentManager);
                 System.out.println("Testing final launch");
             }

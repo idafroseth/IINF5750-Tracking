@@ -34,6 +34,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Window;
 
 import org.hisp.dhis.android.sdk.R;
@@ -90,6 +91,7 @@ public class SplashActivity extends Activity {
                 }
             }
         }
+        Log.d("NextCLASS", nextClass.toString());
 
         return nextClass;
     }

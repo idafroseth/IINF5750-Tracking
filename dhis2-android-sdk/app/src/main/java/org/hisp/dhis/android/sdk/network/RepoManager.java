@@ -64,6 +64,7 @@ public final class RepoManager {
     }
 
     public static DhisApi createService(HttpUrl serverUrl, Credentials credentials) {
+      //  Log.d("ServerURL" , serverUrl.toString());
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(provideServerUrl(serverUrl))
                 .setConverter(provideJacksonConverter())

@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD:dhis2-android-sdk/app/src/main/res/layout/activity_maps.xml
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activities.MapsActivity"
+=======
+>>>>>>> mapToFragment:dhis2-android-sdk/app/src/main/res/layout/fragment_maps.xml
     android:orientation="horizontal"
     android:id="@+id/map"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
+<<<<<<< HEAD:dhis2-android-sdk/app/src/main/res/layout/activity_maps.xml
    <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map_element"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
+=======
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map_element"
+        android:name="com.google.android.gms.maps.MapFragment" />
+>>>>>>> mapToFragment:dhis2-android-sdk/app/src/main/res/layout/fragment_maps.xml
 
    <LinearLayout
         android:orientation="horizontal"
@@ -23,7 +34,11 @@
         android:layout_gravity="bottom"
         android:weightSum="1">
 
+<<<<<<< HEAD:dhis2-android-sdk/app/src/main/res/layout/activity_maps.xml
        <Button
+=======
+     <!--   <Button
+>>>>>>> mapToFragment:dhis2-android-sdk/app/src/main/res/layout/fragment_maps.xml
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/transparent_selector"
@@ -35,16 +50,25 @@
             android:layout_width="1dp"
             android:layout_height="50dp"
             android:background ="@color/white"/>
-
+-->
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/transparent_selector"
+<<<<<<< HEAD:dhis2-android-sdk/app/src/main/res/layout/activity_maps.xml
             android:text="Set Coordinate"
             android:id="@+id/set_coordinate2"
             android:drawableLeft="@drawable/ic_location"
             android:layout_weight="0.3" />
       </LinearLayout>
+=======
+            android:text="Capture selected coordinate"
+            android:id="@+id/set_coordinate2"
+            android:drawableLeft="@drawable/ic_pin_drop_black_24dp"
+            android:alpha="0.60"
+            />
+    </LinearLayout>
+>>>>>>> mapToFragment:dhis2-android-sdk/app/src/main/res/layout/fragment_maps.xml
 
 
 </FrameLayout>

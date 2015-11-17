@@ -39,7 +39,6 @@ import org.hisp.dhis.android.sdk.persistence.models.Enrollment;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Interpretation;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramRule;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramRuleAction;
@@ -75,7 +74,7 @@ public interface DhisApi {
     @GET("/system/info/")
     SystemInfo getSystemInfo();
 
-    @GET("/me/")
+    @GET("/me")
     UserAccount getCurrentUserAccount(@QueryMap Map<String, String> queryParams);
 
 
