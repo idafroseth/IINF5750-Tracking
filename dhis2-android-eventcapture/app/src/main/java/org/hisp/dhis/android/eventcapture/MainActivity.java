@@ -36,15 +36,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import org.hisp.dhis.android.eventcapture.fragments.SelectProgramFragment;
-import org.hisp.dhis.android.sdk.controllers.DhisController;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.PeriodicSynchronizerController;
+import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
-import org.hisp.dhis.android.sdk.ui.activities.LoginActivity;
 import org.hisp.dhis.android.sdk.ui.activities.OnBackPressedListener;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.ui.fragments.loading.LoadingFragment;
 import org.hisp.dhis.android.sdk.utils.UiUtils;
 

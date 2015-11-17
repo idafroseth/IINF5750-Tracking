@@ -31,12 +31,12 @@ package org.hisp.dhis.android.sdk.controllers;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.squareup.okhttp.HttpUrl;
 
-import org.hisp.dhis.android.sdk.network.DhisApi;
-import org.hisp.dhis.android.sdk.network.SessionManager;
 import org.hisp.dhis.android.sdk.network.APIException;
-import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.network.Credentials;
+import org.hisp.dhis.android.sdk.network.DhisApi;
 import org.hisp.dhis.android.sdk.network.Session;
+import org.hisp.dhis.android.sdk.network.SessionManager;
+import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.persistence.preferences.DateTimeManager;
 import org.hisp.dhis.android.sdk.persistence.preferences.LastUpdatedManager;
 
@@ -59,9 +59,11 @@ final class UserController {
                 "firstName,surname,gender,birthday,introduction," +
                 "education,employer,interests,jobTitle,languages,email,phoneNumber," +
                 "organisationUnits[id]");
+        QUERY_PARAMS.put("format", "json");
+      /**Since the server is not sending in Json fromat I try to make my own account based on the xml info**/
+
         UserAccount userAccount = dhisApi
                 .getCurrentUserAccount(QUERY_PARAMS);
-
         // if we got here, it means http
         // request was executed successfully
 
