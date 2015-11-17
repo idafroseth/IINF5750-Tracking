@@ -62,7 +62,7 @@ public class MapsFragment extends Fragment {
         Log.d("OnCreateView", "createView");
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
         setUpMapIfNeeded();
-        setLocationButton = (Button) view.findViewById(R.id.set_coordinate2);
+        setLocationButton = (Button) view.findViewById(R.id.set_coordinate);
         setLocationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click

@@ -33,7 +33,7 @@ public class MapsActivity extends FragmentActivity {
         setUpMapIfNeeded();
 
 
-        setLocationButton = (Button) findViewById(R.id.set_coordinate2);
+        setLocationButton = (Button) findViewById(R.id.set_coordinate);
          setLocationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
