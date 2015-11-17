@@ -92,6 +92,7 @@ public class SplashActivity extends Activity {
             }
         }
         Log.d("NextCLASS", nextClass.toString());
+
         return nextClass;
     }
 }

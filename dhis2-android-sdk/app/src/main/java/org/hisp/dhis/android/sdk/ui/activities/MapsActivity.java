@@ -11,10 +11,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import org.hisp.dhis.android.sdk.R;
 
 public class MapsActivity extends FragmentActivity {
@@ -31,19 +31,14 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_maps);
         setUpMapIfNeeded();
-        final Button cancelButton = (Button) findViewById(R.id.cancel_location);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-                Log.d("maps", "cancelButtonClicked");
-            }
-        });
+
 
         setLocationButton = (Button) findViewById(R.id.set_coordinate2);
         setLocationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
                 Log.d("maps", "SelectedCoordinate: " + clickedPosition.getPosition().toString());
+
             }
         });
         setLocationButton.setEnabled(false);
@@ -80,10 +75,9 @@ public class MapsActivity extends FragmentActivity {
         }
     }
     private void setUpMap() {
-        LatLng gjovik = new LatLng(60.1, 23.1);
+        LatLng africa = new LatLng(0, 0);
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        mMap.addMarker(new MarkerOptions().position(gjovik).title("YourPosition").alpha(0.7f));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(gjovik));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(africa));
         mMap.setOnMapClickListener(new ClickedPosition(this));
     }
 
@@ -115,7 +109,7 @@ public class MapsActivity extends FragmentActivity {
                 clickedPosition.remove();
             }
             setLocationButton.setEnabled(true);
-            clickedPosition =  mMap.addMarker(new MarkerOptions().position(latLng).title("Clicked position").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+            clickedPosition =  mMap.addMarker(new MarkerOptions().position(latLng).title("Clicked position").alpha(0.7f));//.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
             /**      Log.d("ClickedLatLng", latLng.toString());
              getFragmentManager()
              .beginTransaction()
