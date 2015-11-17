@@ -41,7 +41,7 @@ public class MapsActivity extends FragmentActivity {
         });
 
         setLocationButton = (Button) findViewById(R.id.set_coordinate2);
-        setLocationButton.setOnClickListener(new View.OnClickListener() {
+         setLocationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
                 Log.d("maps", "SelectedCoordinate: " + clickedPosition.getPosition().toString());
