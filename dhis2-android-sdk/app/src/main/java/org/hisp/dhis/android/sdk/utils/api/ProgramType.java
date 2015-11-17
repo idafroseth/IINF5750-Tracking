@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2015, University of Oslo
- *
+ * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  * Redistributions of source code must retain the above copyright notice, this
@@ -25,60 +25,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.hisp.dhis.android.sdk.persistence.models;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.Table;
-
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Database;
-import org.hisp.dhis.android.sdk.utils.api.ValueType;
-
-import java.util.List;
+package org.hisp.dhis.android.sdk.utils.api;
 
 /**
- * @author Simen Skogly Russnes on 20.02.15.
+ * @author Chau Thu Tran
+ *
+ * @version $ ProgramType.java Jul 1, 2015 3:09:12 PM $
  */
-@Table(databaseName = Dhis2Database.NAME)
-public class OptionSet extends BaseMetaDataObject {
+public enum ProgramType
+{
+    WITH_REGISTRATION("with_registration"), 
+    WITHOUT_REGISTRATION("without_registration");
+    
+    private final String value;
 
-    @JsonProperty("version")
-    @Column(name = "version")
-    int version;
+    private ProgramType( String value )
+    {
+        this.value = value;
+    }
 
-    @JsonProperty("valueType")
-    @Column
-    ValueType valueType;
-
-    @JsonProperty("options")
-    List<Option> options;
-
-    public List<Option> getOptions() {
-        if (options == null) {
-            options = MetaDataController.getOptions(id);
+    public static ProgramType fromValue( String value )
+    {
+       for ( ProgramType programType : ProgramType.values() )
+        {
+            if ( programType.value.equalsIgnoreCase( value ) )
+            {
+                return programType;
+            }
         }
-        return options;
-    }
 
-    public void setOptions(List<Option> options) {
-        this.options = options;
+        return null;
     }
-
-    public ValueType getValueType() {
-        return valueType;
+    
+    public String getValue()
+    {
+        return value;
     }
-
-    public void setValueType(ValueType valueType) {
-        this.valueType = valueType;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
+    
 }
