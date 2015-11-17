@@ -29,7 +29,7 @@ public class MapsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("On create", "CREATE");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.fragment_maps);
         setUpMapIfNeeded();
         final Button cancelButton = (Button) findViewById(R.id.cancel_location);
         cancelButton.setOnClickListener(new View.OnClickListener() {

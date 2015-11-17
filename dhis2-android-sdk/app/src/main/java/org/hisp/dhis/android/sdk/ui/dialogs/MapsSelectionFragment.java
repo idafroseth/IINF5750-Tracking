@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.hisp.dhis.android.sdk.R;
+import org.hisp.dhis.android.sdk.ui.fragments.dataentry.MapsFragment;
 
 public class MapsSelectionFragment extends DialogFragment {
     private static final String TAG = MapsSelectionFragment.class.getSimpleName();
@@ -30,6 +31,10 @@ public class MapsSelectionFragment extends DialogFragment {
 
                 if (i == R.id.dialog_fragment_select_online) {
                     // launch Google Maps fragment from here
+                    System.out.println("Creating a mapFragment object");
+                    MapsFragment mapWindow = new MapsFragment();
+                    System.out.println("Trying to substitute the fragment");
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, mapWindow).commit();
                 } else if(i == R.id.dialog_fragment_select_offline) {
                     // launch Maps.ME fragment from here
                 }

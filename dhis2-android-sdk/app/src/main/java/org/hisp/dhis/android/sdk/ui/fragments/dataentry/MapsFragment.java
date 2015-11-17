@@ -12,8 +12,7 @@ import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -28,8 +27,8 @@ import org.hisp.dhis.android.sdk.R;
  * to handle interaction events.
  */
 public class MapsFragment extends Fragment {
-    MapView mMapView;
-    private GoogleMap googleMap;
+    GoogleMap googleMap;
+    //private GoogleMap googleMap;
     Marker clickedPosition;
     Button setLocationButton;
 
@@ -42,17 +41,16 @@ public class MapsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        System.out.println("creating the fragment");
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_maps, container,
-                false);
-        mMapView = (MapView) view.findViewById(R.id.map_element);
-        mMapView.onCreate(savedInstanceState);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("OnCreateView", "createView");
+        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+       // setUpMapIfNeeded();
         final Button cancelButton = (Button) view.findViewById(R.id.cancel_location);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -69,15 +67,20 @@ public class MapsFragment extends Fragment {
             }
         });
         setLocationButton.setEnabled(false);
-        try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        setUpMap();
-
-        // Perform any camera updates here
         return view;
+    }
+    private void setUpMapIfNeeded() {
+        // Do a null check to confirm that we have not already instantiated the map.
+        if (googleMap == null) {
+            // Try to obtain the map from the SupportMapFragment.
+            System.out.println("**************" + getFragmentManager().findFragmentById(R.id.map_element));
+            googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_element))
+                    .getMap();
+            // Check if we were successful in obtaining the map.
+            if (googleMap != null) {
+                setUpMap();
+            }
+        }
     }
 
     private void setUpMap() {
@@ -91,12 +94,12 @@ public class MapsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
+       /** try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+        }**/
     }
 
     @Override
@@ -109,19 +112,16 @@ public class MapsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mMapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mMapView.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mMapView.onDestroy();
     }
 
     /**

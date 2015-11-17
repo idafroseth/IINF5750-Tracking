@@ -85,6 +85,12 @@
 
         <!-- Specify the next screen after SplashScreen if user already logged in -->
         <meta-data android:name="nextClassName" android:value="org.hisp.dhis.android.eventcapture.MainActivity" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCoDum2YWuylUBGNRcbaIPD5aGYV45UaRk" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
