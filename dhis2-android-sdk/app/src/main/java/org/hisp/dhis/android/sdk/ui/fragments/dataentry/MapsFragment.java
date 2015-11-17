@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,14 +31,24 @@ public class MapsFragment extends Fragment {
     GoogleMap googleMap;
     //private GoogleMap googleMap;
     Marker clickedPosition;
-    Button setLocationButton;
+    private Button setLocationButton;
+    private EditText mLatitude = null;
+    private EditText mLongitude = null;
 
     private OnFragmentInteractionListener mListener;
+
+    public static MapsFragment newInstance(EditText lat, EditText lng){
+        MapsFragment mapsFrag = new MapsFragment();
+        mapsFrag.mLatitude = lat;
+        mapsFrag.mLongitude = lng;
+        return mapsFrag;
+    }
 
 
     public MapsFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +67,8 @@ public class MapsFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Log.d("maps", "SelectedCoordinate: " + clickedPosition.getPosition().toString());
+                mLatitude.setText(Double.toString((double)clickedPosition.getPosition().latitude));
+                mLongitude.setText(Double.toString((double)clickedPosition.getPosition().longitude));
                 getFragmentManager().popBackStack();
                 /// /mListener.onSetCoordinateClicked();
             }

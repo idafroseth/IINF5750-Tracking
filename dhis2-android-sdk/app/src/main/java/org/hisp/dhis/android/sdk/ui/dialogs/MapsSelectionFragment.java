@@ -8,12 +8,22 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
 import org.hisp.dhis.android.sdk.R;
 import org.hisp.dhis.android.sdk.ui.fragments.dataentry.MapsFragment;
 
 public class MapsSelectionFragment extends DialogFragment {
     private static final String TAG = MapsSelectionFragment.class.getSimpleName();
+    private EditText mLatitude = null;
+    private EditText mLongitude = null;
+
+    public static MapsSelectionFragment newInstance(EditText lat, EditText lng){
+        MapsSelectionFragment mapSelectDialog = new MapsSelectionFragment();
+        mapSelectDialog.mLatitude = lat;
+        mapSelectDialog.mLongitude = lng;
+        return mapSelectDialog;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -32,7 +42,7 @@ public class MapsSelectionFragment extends DialogFragment {
 
                 if (i == R.id.dialog_fragment_select_online) {
                     // launch Google Maps fragment from here
-                    MapsFragment mapWindow = new MapsFragment();
+                    MapsFragment mapWindow = MapsFragment.newInstance(mLatitude, mLongitude);
                     FragmentTransaction fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragment_container, mapWindow);
                     fragTransaction.addToBackStack(null);
                     fragTransaction.commit();
