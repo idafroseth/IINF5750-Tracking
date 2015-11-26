@@ -1,6 +1,5 @@
 package org.hisp.dhis.android.sdk.ui.fragments.dataentry;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -64,7 +63,7 @@ public class MapsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("OnCreateView", "createView");
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
-        //setUpMapIfNeeded();
+        setUpMapIfNeeded();
         setLocationButton = (Button) view.findViewById(R.id.set_coordinate);
         setLocationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -79,6 +78,8 @@ public class MapsFragment extends Fragment {
         setLocationButton.setEnabled(false);
         return view;
     }
+
+
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (googleMap == null) {
@@ -101,17 +102,6 @@ public class MapsFragment extends Fragment {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(mapFocus));
       //  googleMap.moveCamera(CameraUpdateFactory.zoomBy(3));
         googleMap.setOnMapClickListener(new ClickedPosition(this));
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-      /**  try{
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e){
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }**/
     }
 
     @Override
