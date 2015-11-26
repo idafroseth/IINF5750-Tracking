@@ -1,9 +1,9 @@
 package org.hisp.dhis.android.sdk.ui.fragments.dataentry;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +14,13 @@ import android.widget.EditText;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.hisp.dhis.android.sdk.R;
+import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,10 +36,11 @@ public class MapsFragment extends Fragment {
     private Button setLocationButton;
     private EditText mLatitude = null;
     private EditText mLongitude = null;
+    public static final String TAG = MapsFragment.class.getSimpleName();
 
     private OnFragmentInteractionListener mListener;
 
-    public static MapsFragment newInstance(EditText lat, EditText lng){
+    public static Fragment newInstance(EditText lat, EditText lng){
         MapsFragment mapsFrag = new MapsFragment();
         mapsFrag.mLatitude = lat;
         mapsFrag.mLongitude = lng;
@@ -61,14 +64,14 @@ public class MapsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("OnCreateView", "createView");
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
-        setUpMapIfNeeded();
+        //setUpMapIfNeeded();
         setLocationButton = (Button) view.findViewById(R.id.set_coordinate);
         setLocationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
                 Log.d("maps", "SelectedCoordinate: " + clickedPosition.getPosition().toString());
-                mLatitude.setText(Double.toString((double)clickedPosition.getPosition().latitude));
-                mLongitude.setText(Double.toString((double)clickedPosition.getPosition().longitude));
+                mLatitude.setText(Double.toString((double) clickedPosition.getPosition().latitude));
+                mLongitude.setText(Double.toString((double) clickedPosition.getPosition().longitude));
                 getFragmentManager().popBackStack();
                 /// /mListener.onSetCoordinateClicked();
             }
@@ -81,8 +84,8 @@ public class MapsFragment extends Fragment {
         if (googleMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             System.out.println("**************" + getFragmentManager().findFragmentById(R.id.map_element));
-            mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_element));
-            googleMap = mapFragment.getMap();
+            googleMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map_element)).getMap();
+      //      googleMap = mapFragment.getMap();
             // Check if we were successful in obtaining the map.
             if (googleMap != null) {
                 setUpMap();
@@ -116,8 +119,8 @@ public class MapsFragment extends Fragment {
         System.out.println("******* ON detach");
         super.onDetach();
         mListener = null;
+        removeMapFragment();
     }
-
 
     @Override
     public void onResume() {
@@ -129,19 +132,36 @@ public class MapsFragment extends Fragment {
     public void onPause() {
         System.out.println("******* ON pause");
         super.onPause();
-        mapFragment.onPause();
+        removeMapFragment();
+        Dhis2Application.getEventBus().unregister(this);
     }
 
     @Override
     public void onDestroy() {
         System.out.println("******* ON destroy");
         super.onDestroy();
+        removeMapFragment();
+        Dhis2Application.getEventBus().unregister(this);
     }
 
     @Override
     public void onDestroyView() {
-        System.out.println("******* ON destroyView");
+        System.out.println("******* ON destroy view");
         super.onDestroyView();
+        removeMapFragment();
+        Dhis2Application.getEventBus().unregister(this);
+    }
+
+    private void removeMapFragment(){
+        super.onDestroyView();
+
+        Fragment mapFrag = getFragmentManager().findFragmentById(R.id.map_element);
+        if (mapFrag != null) {
+
+            getFragmentManager().beginTransaction().remove(mapFrag)
+                    .commit();
+            mapFrag = null;
+        }
     }
 
 

@@ -258,6 +258,8 @@ public final class CoordinatesRow extends Row {
                 System.out.println("This window should have launched");
                 MapsSelectionFragment mapsSelectionFragment =  MapsSelectionFragment.newInstance(mLatitude,mLongitude);
                 mapsSelectionFragment.show(fragmentManager);
+            //    mNavigationHandler.switchFragment(
+             //           new MapsFragment(), MapsFragment.TAG, false);
                 System.out.println("Testing final launch");
             }
         }

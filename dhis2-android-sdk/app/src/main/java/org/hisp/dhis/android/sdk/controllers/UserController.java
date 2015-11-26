@@ -59,8 +59,7 @@ final class UserController {
                 "firstName,surname,gender,birthday,introduction," +
                 "education,employer,interests,jobTitle,languages,email,phoneNumber," +
                 "organisationUnits[id]");
-        QUERY_PARAMS.put("format", "json");
-      /**Since the server is not sending in Json fromat I try to make my own account based on the xml info**/
+ /**       QUERY_PARAMS.put("format", "json");**/
 
         UserAccount userAccount = dhisApi
                 .getCurrentUserAccount(QUERY_PARAMS);

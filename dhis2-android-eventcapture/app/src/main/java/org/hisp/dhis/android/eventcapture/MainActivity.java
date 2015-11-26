@@ -34,6 +34,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import org.hisp.dhis.android.eventcapture.fragments.SelectProgramFragment;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
 
     @Override
     public void switchFragment(Fragment fragment, String fragmentTag, boolean addToBackStack) {
+        Log.d("***FRAGMENT Switch", fragment.toString());
         if (fragment != null) {
             FragmentTransaction transaction =
                     getSupportFragmentManager().beginTransaction();

@@ -24,6 +24,8 @@ public class MapsActivity extends FragmentActivity {
     Button setLocationButton;
     public final int PICK_COORDINATE_REQUEST = 100;
 
+    protected INavigationHandler mNavigationHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

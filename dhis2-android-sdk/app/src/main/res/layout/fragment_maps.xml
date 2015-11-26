@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map_element"
-        android:name="com.google.android.gms.maps.MapFragment" />
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
 
    <LinearLayout
         android:orientation="horizontal"
@@ -26,7 +26,7 @@
             android:background="@drawable/transparent_selector"
             android:text="Set Coordinate"
             android:id="@+id/set_coordinate"
-            android:src="@drawable/ic_pin_drop_black_24dp"
+            android:drawableLeft="@drawable/ic_pin_drop_black_24dp"
             android:alpha="0.60" />
       </LinearLayout>
 

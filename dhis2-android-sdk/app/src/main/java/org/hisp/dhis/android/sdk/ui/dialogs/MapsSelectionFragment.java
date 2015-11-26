@@ -4,19 +4,20 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 import org.hisp.dhis.android.sdk.R;
+import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
 import org.hisp.dhis.android.sdk.ui.fragments.dataentry.MapsFragment;
 
 public class MapsSelectionFragment extends DialogFragment {
     private static final String TAG = MapsSelectionFragment.class.getSimpleName();
     private EditText mLatitude = null;
     private EditText mLongitude = null;
+    protected INavigationHandler mNavigationHandler;
 
     public static MapsSelectionFragment newInstance(EditText lat, EditText lng){
         MapsSelectionFragment mapSelectDialog = new MapsSelectionFragment();
@@ -27,6 +28,14 @@ public class MapsSelectionFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        if (getActivity() instanceof INavigationHandler) {
+            mNavigationHandler = (INavigationHandler) getActivity();
+        } else {
+            throw new IllegalArgumentException("Activity must " +
+                    "implement INavigationHandler interface");
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final View view = getActivity().getLayoutInflater().inflate(
                 R.layout.dialog_fragment_map_selection, null);
@@ -42,10 +51,13 @@ public class MapsSelectionFragment extends DialogFragment {
 
                 if (i == R.id.dialog_fragment_select_online) {
                     // launch Google Maps fragment from here
-                    MapsFragment mapWindow = MapsFragment.newInstance(mLatitude, mLongitude);
-                    FragmentTransaction fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragment_container, mapWindow);
+                  //  Fragment mapWindow = MapsFragment.newInstance(mLatitude, mLongitude);
+                    mNavigationHandler.switchFragment(
+                            new MapsFragment(), MapsFragment.TAG, true);
+                   /** FragmentTransaction fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragment_container, mapWindow);
                     fragTransaction.addToBackStack(null);
                     fragTransaction.commit();
+               **/
                 } else if(i == R.id.dialog_fragment_select_offline) {
                     // launch Maps.ME fragment from here
                 }
@@ -67,6 +79,16 @@ public class MapsSelectionFragment extends DialogFragment {
             }
         });
         return dialogWindow;
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        // we need to nullify reference
+        // to parent activity in order not to leak it
+        if (getActivity() != null &&
+                getActivity() instanceof INavigationHandler) {
+            ((INavigationHandler) getActivity()).setBackPressedListener(null);
+        }
     }
 
     public void show(FragmentManager fragmentManager) {
