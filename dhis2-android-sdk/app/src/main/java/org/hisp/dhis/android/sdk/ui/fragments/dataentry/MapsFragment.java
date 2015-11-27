@@ -84,8 +84,8 @@ public class MapsFragment extends Fragment {
         // Do a null check to confirm that we have not already instantiated the map.
         if (googleMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            System.out.println("**************" + getFragmentManager().findFragmentById(R.id.map_element));
-            googleMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map_element)).getMap();
+            System.out.println("**************" + getChildFragmentManager().findFragmentById(R.id.map_element));
+            googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_element)).getMap();
       //      googleMap = mapFragment.getMap();
             // Check if we were successful in obtaining the map.
             if (googleMap != null) {
