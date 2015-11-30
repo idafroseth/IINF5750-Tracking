@@ -1,13 +1,17 @@
 package org.hisp.dhis.android.sdk.ui.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import com.mapswithme.maps.api.MapsWithMeApi;
 
 import org.hisp.dhis.android.sdk.R;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
@@ -15,6 +19,7 @@ import org.hisp.dhis.android.sdk.ui.fragments.dataentry.MapsFragment;
 
 public class MapsSelectionFragment extends DialogFragment {
     private static final String TAG = MapsSelectionFragment.class.getSimpleName();
+    private Context context;
     private EditText mLatitude = null;
     private EditText mLongitude = null;
     protected INavigationHandler mNavigationHandler;
@@ -24,6 +29,16 @@ public class MapsSelectionFragment extends DialogFragment {
         mapSelectDialog.mLatitude = lat;
         mapSelectDialog.mLongitude = lng;
         return mapSelectDialog;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            context = (Context) activity;
+        } catch(ClassCastException e) {
+            // class cast failed
+        }
     }
 
     @Override
@@ -60,6 +75,12 @@ public class MapsSelectionFragment extends DialogFragment {
                **/
                 } else if(i == R.id.dialog_fragment_select_offline) {
                     // launch Maps.ME fragment from here
+                    if(MapsWithMeApi.isMapsWithMeInstalled(context)) {
+                        // launch as normal
+                    } else {
+                        // error
+                    }
+
                 }
             }
         };

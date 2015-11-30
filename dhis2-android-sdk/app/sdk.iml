@@ -91,15 +91,15 @@
     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
-    <orderEntry type="library" exported="" name="commons-beanutils-1.8.3" level="project" />
     <orderEntry type="library" exported="" name="guava-annotations-r03" level="project" />
-    <orderEntry type="library" exported="" name="guava-primitives-r03" level="project" />
+    <orderEntry type="library" exported="" name="commons-beanutils-1.8.3" level="project" />
     <orderEntry type="library" exported="" name="jackson-datatype-joda-2.6.3" level="project" />
+    <orderEntry type="library" exported="" name="guava-primitives-r03" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-8.3.0" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.9.0" level="project" />
-    <orderEntry type="library" exported="" name="guava-base-r03" level="project" />
     <orderEntry type="library" exported="" name="DBFlow-Core-2.2.1" level="project" />
+    <orderEntry type="library" exported="" name="guava-base-r03" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="joda-time-2.8.2" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.6.3" level="project" />
@@ -110,8 +110,8 @@
     <orderEntry type="library" exported="" name="okio-1.4.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.1.0" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-2.6.3" level="project" />
-    <orderEntry type="library" exported="" name="converter-jackson-1.9.0" level="project" />
     <orderEntry type="library" exported="" name="commons-digester-1.8" level="project" />
+    <orderEntry type="library" exported="" name="converter-jackson-1.9.0" level="project" />
     <orderEntry type="library" exported="" name="okhttp-urlconnection-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="jackson-databind-2.6.3" level="project" />
     <orderEntry type="library" exported="" name="guava-collections-r03" level="project" />

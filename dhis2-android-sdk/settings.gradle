@@ -26,4 +26,5 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-include ':app', ':models', ':ui', ':core', ':persistence', ':network', ':core-java', ':core-android'
+include ':app', ':models', ':ui', ':core', ':persistence', ':network', ':core-java', ':core-android', ':lib'
+project(':lib').projectDir = new File('app/lib')
