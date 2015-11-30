@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.content.Context;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -14,12 +16,13 @@ import android.widget.EditText;
 import com.mapswithme.maps.api.MapsWithMeApi;
 
 import org.hisp.dhis.android.sdk.R;
+import org.hisp.dhis.android.sdk.controllers.GpsController;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
 import org.hisp.dhis.android.sdk.ui.fragments.dataentry.MapsFragment;
 
 public class MapsSelectionFragment extends DialogFragment {
     private static final String TAG = MapsSelectionFragment.class.getSimpleName();
-    private Context context;
+    private Activity context;
     private EditText mLatitude = null;
     private EditText mLongitude = null;
     protected INavigationHandler mNavigationHandler;
@@ -35,7 +38,7 @@ public class MapsSelectionFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            context = (Context) activity;
+            context = activity;
         } catch(ClassCastException e) {
             // class cast failed
         }
@@ -77,6 +80,13 @@ public class MapsSelectionFragment extends DialogFragment {
                     // launch Maps.ME fragment from here
                     if(MapsWithMeApi.isMapsWithMeInstalled(context)) {
                         // launch as normal
+                        Location location = GpsController.getLocation();
+                        String name = "Current Location";
+                        Intent intent = new Intent(context, MapsSelectionFragment.class);
+                        PendingIntent pi = PendingIntent.getActivity(context, 3, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        MapsWithMeApi.pickPoint(getActivity(), "Select point", pi);
+//                        MapsWithMeApi.showPointOnMap(getActivity(), location.getLatitude(),
+//                                location.getLongitude(), name);
                     } else {
                         // error
                     }

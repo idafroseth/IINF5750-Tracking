@@ -1,2 +1,3 @@
-include ':app', ':sdk'
+include ':app', ':sdk', ':lib'
 project(':sdk').projectDir = new File(settingsDir, '../dhis2-android-sdk/app')
+project(':lib').projectDir = new File(settingsDir, '../dhis2-android-sdk/lib')

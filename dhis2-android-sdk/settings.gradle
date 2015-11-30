@@ -27,4 +27,3 @@
  */
 
 include ':app', ':models', ':ui', ':core', ':persistence', ':network', ':core-java', ':core-android', ':lib'
-project(':lib').projectDir = new File('app/lib')

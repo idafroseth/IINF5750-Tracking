@@ -101,4 +101,5 @@ dependencies {
         exclude module: 'commons-logging'
     }
     compile 'com.google.guava:guava-collections:r03'
+    compile project(':lib')
 }
