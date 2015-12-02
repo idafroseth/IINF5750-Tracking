@@ -160,6 +160,9 @@ public class MapsFragment extends Fragment {
         System.out.println("******* ON detach");
         super.onDetach();
         removeMapFragment();
+        // we need to nullify reference
+        // to parent activity in order not to leak it
+        mNavigationHandler = null;
     }
 
      /**
@@ -189,6 +192,11 @@ public class MapsFragment extends Fragment {
         }
     }
 
+    /**
+     * Initialize the menu
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         System.out.println("Menu created");
@@ -196,13 +204,20 @@ public class MapsFragment extends Fragment {
         inflater.inflate(R.menu.menu_main, menu);
     }
 
+    /**
+     * Add action to the menu
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.home) {
-            mNavigationHandler.onBackPressed();
+        switch (id){
+            //Were not able to find the correct id so hardcoded it
+            case (16908332):
+                mNavigationHandler.onBackPressed();
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
