@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 
@@ -51,13 +52,9 @@ public class MapsSelectionFragment extends DialogFragment {
 
                 if (i == R.id.dialog_fragment_select_online) {
                     // launch Google Maps fragment from here
-                  //  Fragment mapWindow = MapsFragment.newInstance(mLatitude, mLongitude);
+                    Fragment mapWindow = MapsFragment.newInstance(mLatitude, mLongitude);
                     mNavigationHandler.switchFragment(
-                            new MapsFragment(), MapsFragment.TAG, true);
-                   /** FragmentTransaction fragTransaction = getFragmentManager().beginTransaction().replace(R.id.fragment_container, mapWindow);
-                    fragTransaction.addToBackStack(null);
-                    fragTransaction.commit();
-               **/
+                            mapWindow, MapsFragment.TAG, true);
                 } else if(i == R.id.dialog_fragment_select_offline) {
                     // launch Maps.ME fragment from here
                 }

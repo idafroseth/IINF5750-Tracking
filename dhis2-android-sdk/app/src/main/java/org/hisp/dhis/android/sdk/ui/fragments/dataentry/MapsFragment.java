@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.hisp.dhis.android.sdk.R;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +37,8 @@ public class MapsFragment extends Fragment {
     private EditText mLatitude = null;
     private EditText mLongitude = null;
     public static final String TAG = MapsFragment.class.getSimpleName();
+
+    protected INavigationHandler mNavigationHandler;
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,6 +64,12 @@ public class MapsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (getActivity() instanceof INavigationHandler) {
+            mNavigationHandler = (INavigationHandler) getActivity();
+        } else {
+            throw new IllegalArgumentException("Activity must " +
+                    "implement INavigationHandler interface");
+        }
         Log.d("OnCreateView", "createView");
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
         setUpMapIfNeeded();
@@ -71,7 +80,8 @@ public class MapsFragment extends Fragment {
                 Log.d("maps", "SelectedCoordinate: " + clickedPosition.getPosition().toString());
                 mLatitude.setText(Double.toString((double) clickedPosition.getPosition().latitude));
                 mLongitude.setText(Double.toString((double) clickedPosition.getPosition().longitude));
-                getFragmentManager().popBackStack();
+                mNavigationHandler.onBackPressed();
+              //  getFragmentManager().popBackStack();
                 /// /mListener.onSetCoordinateClicked();
             }
         });
