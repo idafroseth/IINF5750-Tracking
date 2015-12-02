@@ -202,6 +202,7 @@ public class MapsFragment extends Fragment {
         System.out.println("Menu created");
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.action_settings).setVisible(false);
     }
 
     /**
@@ -212,12 +213,10 @@ public class MapsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
-            //Were not able to find the correct id so hardcoded it
-            case (16908332):
-                mNavigationHandler.onBackPressed();
-                break;
+        if(id == 16908332){
+            mNavigationHandler.onBackPressed();
         }
+
         return super.onOptionsItemSelected(item);
     }
 
