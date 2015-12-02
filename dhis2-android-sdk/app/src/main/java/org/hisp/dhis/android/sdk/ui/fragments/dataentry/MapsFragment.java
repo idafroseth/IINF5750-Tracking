@@ -8,6 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,7 +25,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.hisp.dhis.android.sdk.R;
 import org.hisp.dhis.android.sdk.controllers.GpsController;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
 
 /**
@@ -40,10 +42,13 @@ public class MapsFragment extends Fragment {
      */
     private Button setLocationButton;
     /**
-     *
+     *mLatitude and mLongitude are fields in the rows and have to be initialized when the fragment is created
      */
     private EditText mLatitude = null;
     private EditText mLongitude = null;
+    /**
+     * Return the id for this
+     */
     public static final String TAG = MapsFragment.class.getSimpleName();
     private INavigationHandler mNavigationHandler;
 
@@ -66,6 +71,12 @@ public class MapsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     /**
      * Creates the view and add the map to the fragment.
      * @param inflater
@@ -81,7 +92,6 @@ public class MapsFragment extends Fragment {
             throw new IllegalArgumentException("Activity must " +
                     "implement INavigationHandler interface");
         }
-        Log.d("OnCreateView", "createView");
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
         setUpMapIfNeeded();
         setSetLocationButton(view);
@@ -90,7 +100,7 @@ public class MapsFragment extends Fragment {
     }
 
     /**
-     * Set the location
+     * Set the setLocationButton to listen for click and pop the stack.
      * @param view
      */
     private void setSetLocationButton(View view){
@@ -99,11 +109,10 @@ public class MapsFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Log.d("maps", "SelectedCoordinate: " + clickedPosition.getPosition().toString());
-                if(mLatitude!=null && mLongitude!=null) {
+                if (mLatitude != null && mLongitude != null) {
                     mLatitude.setText(Double.toString((double) clickedPosition.getPosition().latitude));
                     mLongitude.setText(Double.toString((double) clickedPosition.getPosition().longitude));
-                }
-                else{
+                } else {
                     Log.e("MapFragment Error", "Not initialized with callback pointers");
                 }
                 mNavigationHandler.onBackPressed();
@@ -123,7 +132,7 @@ public class MapsFragment extends Fragment {
     }
 
     /**
-     * Set up the map with the camera focus on central africa
+     * Set up the map with the camera focus on user location if available if not to central africa
      */
     private void setUpMap() {
         LatLng mapFocus = new LatLng(8, 21);
@@ -138,32 +147,30 @@ public class MapsFragment extends Fragment {
         if (location != null) {
             mapFocus = new LatLng(location.getLatitude(),
                     location.getLongitude());
-            System.out.println("user location is:"+location.getLatitude());
-        }else {
-            System.out.println("Location was not null");
         }
-        System.out.println("Location are: " + mapFocus);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapFocus,5));
-
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapFocus,7));
         googleMap.setOnMapClickListener(new ClickedPosition(this));
     }
 
+    /**
+     * Release the map fragment when detached.
+     */
     @Override
     public void onDetach() {
         System.out.println("******* ON detach");
         super.onDetach();
         removeMapFragment();
     }
-    /**
+
+     /**
      *
-     * Release the map whenever the view is destroyed and unregister the fragment from the dhis application eventbus
+     * Unregister the fragment from the dhis application eventbus
      */
     @Override
     public void onDestroyView() {
         System.out.println("******* ON destroy view");
-        removeMapFragment();
         super.onDestroyView();
-        Dhis2Application.getEventBus().unregister(this);
+      //  Dhis2Application.getEventBus().unregister(this);
     }
 
     /**
@@ -180,6 +187,23 @@ public class MapsFragment extends Fragment {
         }catch(IllegalStateException e){
             //The state has already been saved
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        System.out.println("Menu created");
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.home) {
+            mNavigationHandler.onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
