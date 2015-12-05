@@ -3,6 +3,7 @@ package org.hisp.dhis.android.sdk.ui.fragments.dataentry;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -23,13 +24,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.github.kevinsawicki.http.HttpRequest;
 import org.hisp.dhis.android.sdk.R;
 import org.hisp.dhis.android.sdk.controllers.GpsController;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
- * @author Ida Marie Frøseth
+ * @author Ida Marie Frøseth,Sabrina Alam Chowdhury
  */
 public class MapsFragment extends Fragment {
     GoogleMap googleMap;
@@ -51,7 +56,10 @@ public class MapsFragment extends Fragment {
      */
     public static final String TAG = MapsFragment.class.getSimpleName();
     private INavigationHandler mNavigationHandler;
-
+    /*
+        * JSON api for getting events data
+         */
+    private static String url ="https://play.dhis2.org/dev/api/events.json";
 
     /**
      * Create the fragment and send with the lat and lng rows in the table
@@ -126,6 +134,7 @@ public class MapsFragment extends Fragment {
              googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_element)).getMap();
             // Check if we were successful in obtaining the map.
             if (googleMap != null) {
+                startEventMarker();
                 setUpMap();
             }
         }
@@ -248,6 +257,72 @@ public class MapsFragment extends Fragment {
             }
             setLocationButton.setEnabled(true);
             clickedPosition =  googleMap.addMarker(new MarkerOptions().position(latLng).title("Clicked position").alpha(0.8f));
+        }
+    }
+    /**** Displaying Marker Options Start ****/
+    /**
+     * Methods for invoking marker
+     */
+
+    protected void startEventMarker() {
+        System.out.println("****starting to Json****");
+        DownloadJsonFile downloadJsonFile = new DownloadJsonFile();
+        // Download the GeoJSON file
+        downloadJsonFile.execute(url);
+        //    System.out.println("invoked");
+    }
+    private class DownloadJsonFile extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try {
+                // Open a stream from the URL
+
+                HttpRequest request = HttpRequest.get(url).contentType("application/json").basic("admin","district");
+                String jsonStr = request.body();
+                //  InputStream stream = new URL(params[0]).openStream();
+                System.out.println("Its done");
+                // Convert result to JSONObject
+                return new JSONObject(jsonStr.toString());
+            } catch (Exception e) {
+                Log.e("file cnt converted", " file could not be converted to a JSONObject");
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            if (jsonObject != null) {
+                // De-serialize the JSON Object into an array of events objects
+
+                try {
+                    JSONArray jsonArray = jsonObject.getJSONArray("events");
+                    System.out.println("jsonArray" +jsonArray.toString());
+                    System.out.println("length********" +jsonArray.length());
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        // Create a marker for each city in the JSON data.
+                        JSONObject jsonObj = jsonArray.getJSONObject(i);
+                        /**
+                         * Set for example as the json url dont have sufficient coordinates to display events
+                         */
+                        Double lat = 1.5;
+                        Double lon = 0.0;
+                        googleMap.addMarker(new MarkerOptions()
+                                        .title("Registered Events-"+jsonObj.getString("event"))
+                                        .snippet(jsonObj.getString("orgUnitName"))
+                                        .position(new LatLng(lat+(i*1.5),lon+(i*-0.01))
+                                                /**
+                                                 * Uncommenting these two lines can get the value from the json object
+                                                 */
+                                                //  Double.parseDouble(jsonObj.getJSONObject("coordinate").getString("latitude")),
+                                                //  Double.parseDouble(jsonObj.getJSONObject("coordinate").getString("longitude"))
+                                        )
+                        );
+                    } } catch (JSONException e) {
+                    Log.e("JsonException"+e.getMessage(),"");
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
