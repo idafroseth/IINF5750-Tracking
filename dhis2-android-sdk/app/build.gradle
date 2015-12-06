@@ -101,4 +101,6 @@ dependencies {
         exclude module: 'commons-logging'
     }
     compile 'com.google.guava:guava-collections:r03'
+     //HttpRequest Library
+    compile 'com.github.kevinsawicki:http-request:5.6'
 }
