@@ -72,7 +72,7 @@ public final class CoordinatesRow extends Row {
             View root = inflater.inflate(
                     R.layout.listview_row_coordinate_picker, container, false);
             detailedInfoButton =  root.findViewById(R.id.detailed_info_button_layout);
-            holder = new CoordinateViewHolder(root, detailedInfoButton);
+            holder = new CoordinateViewHolder(root, detailedInfoButton, mEvent);
 
             root.setTag(holder);
             view = root;
@@ -116,7 +116,7 @@ public final class CoordinatesRow extends Row {
         private final LongitudeWatcher longitudeWatcher;
         private final OnCaptureCoordsClickListener onButtonClickListener;
 
-        public CoordinateViewHolder(View view, View detailedInfoButton) {
+        public CoordinateViewHolder(View view, View detailedInfoButton, Event mEvent) {
             final String latitudeMessage = view.getContext()
                     .getString(R.string.latitude_error_message);
             final String longitudeMessage = view.getContext()
@@ -138,7 +138,7 @@ public final class CoordinatesRow extends Row {
                 fm = ((Activity) view.getContext()).getFragmentManager();
             }
 
-            onButtonClickListener = new OnCaptureCoordsClickListener(fm, latitude, longitude);
+            onButtonClickListener = new OnCaptureCoordsClickListener(fm, latitude, longitude, mEvent);
 
             latitude.addTextChangedListener(latitudeWatcher);
             longitude.addTextChangedListener(longitudeWatcher);
@@ -201,7 +201,6 @@ public final class CoordinatesRow extends Row {
                     DataValue dataValue = new DataValue();
                     dataValue.setValue("" + newValue);
                     Dhis2Application.getEventBus().post(new RowValueChangedEvent(dataValue, DataEntryRowTypes.COORDINATES.toString()));
-
                 }
             }
         }
@@ -238,29 +237,28 @@ public final class CoordinatesRow extends Row {
     private static class OnCaptureCoordsClickListener implements View.OnClickListener {
         private final EditText mLatitude;
         private final EditText mLongitude;
+        private final Event mEvent;
         private final android.app.FragmentManager fragmentManager;
 
         public OnCaptureCoordsClickListener(android.app.FragmentManager fragmentManager,
-                                            EditText latitude, EditText longitude) {
+                                            EditText latitude, EditText longitude, Event event) {
             this.fragmentManager = fragmentManager;
             mLatitude = latitude;
             mLongitude = longitude;
+            mEvent = event;
         }
 
         @Override
         public void onClick(View v) {
-            System.out.println("Clicked the button...the id is " + v.getId());
             if (v.getId() == R.id.capture_coordinates) {
                 Location location = GpsController.getLocation();
                 mLatitude.setText(String.valueOf(location.getLatitude()));
                 mLongitude.setText(String.valueOf(location.getLongitude()));
             } else if (v.getId() == R.id.capture_map_coordinates) {
-                System.out.println("This window should have launched");
-                MapsSelectionFragment mapsSelectionFragment =  MapsSelectionFragment.newInstance(mLatitude,mLongitude);
+                MapsSelectionFragment mapsSelectionFragment =  MapsSelectionFragment.newInstance(
+                        mLatitude, mLongitude, mEvent);
+
                 mapsSelectionFragment.show(fragmentManager);
-            //    mNavigationHandler.switchFragment(
-             //           new MapsFragment(), MapsFragment.TAG, false);
-                System.out.println("Testing final launch");
             }
         }
     }

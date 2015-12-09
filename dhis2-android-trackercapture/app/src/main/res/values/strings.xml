@@ -40,8 +40,7 @@
     <string name="http_error_503">Service unavailable</string>
     <string name="http_error_504">Gateway timed out</string>
 
-
-
+    <string name="coordinates_updated">updated coordinates for event</string>
 
 
 

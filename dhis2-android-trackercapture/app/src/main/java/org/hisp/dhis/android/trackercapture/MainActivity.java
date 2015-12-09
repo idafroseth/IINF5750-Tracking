@@ -29,28 +29,39 @@
 
 package org.hisp.dhis.android.trackercapture;
 
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.mapswithme.maps.api.MWMResponse;
 
 import org.hisp.dhis.android.sdk.controllers.DhisController;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.PeriodicSynchronizerController;
+import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
+import org.hisp.dhis.android.sdk.ui.activities.OfflineMapHandler;
 import org.hisp.dhis.android.sdk.ui.activities.OnBackPressedListener;
 import org.hisp.dhis.android.sdk.ui.fragments.loading.LoadingFragment;
 import org.hisp.dhis.android.sdk.utils.UiUtils;
 import org.hisp.dhis.android.trackercapture.fragments.selectprogram.SelectProgramFragment;
 
 
-public class MainActivity extends AppCompatActivity implements INavigationHandler {
+public class MainActivity extends AppCompatActivity implements INavigationHandler, OfflineMapHandler {
     public final static String TAG = MainActivity.class.getSimpleName();
+    public static String EXTRA_FROM_MWM = "from-maps-with-me";
+    public static String EXTRA_EVENT_ID = "event-id";
     private OnBackPressedListener mBackPressedListener;
 
     @Override
@@ -73,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
 
         PeriodicSynchronizerController.activatePeriodicSynchronizer(this);
         showSelectProgramFragment();
+
+        handleIntent(getIntent());
+
     }
 
     public void loadInitialData() {
@@ -147,6 +161,35 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
             }
 
             transaction.commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public PendingIntent getPendingIntent(Context context, Event event) {
+        Intent i = new Intent(context, MainActivity.class);
+        i.putExtra(EXTRA_FROM_MWM, true);
+        i.putExtra(EXTRA_EVENT_ID, event.getLocalId());
+        return PendingIntent.getActivity(context, 0, i, 0);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if(intent.getBooleanExtra(EXTRA_FROM_MWM, false)) {
+//            System.out.println(intent.getExtras().toString());
+            final MWMResponse response = MWMResponse.extractFromIntent(this, intent);
+            Event event = TrackerController.getEvent(intent.getLongExtra(EXTRA_EVENT_ID, 0L));
+            double lat = response.getPoint().getLat();
+            double lon = response.getPoint().getLon();
+            event.setLatitude(lat);
+            event.setLongitude(lon);
+            event.save();
+
+            Toast.makeText(this, R.string.coordinates_updated, Toast.LENGTH_LONG).show();
         }
     }
 }

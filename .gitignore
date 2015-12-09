@@ -28,6 +28,3 @@ proguard/
 
 .idea
 *.iml
-*.iml
-dhis2-android-sdk/app/sdk.iml
-*.iml
