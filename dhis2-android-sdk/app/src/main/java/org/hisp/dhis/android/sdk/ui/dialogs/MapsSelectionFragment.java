@@ -19,6 +19,7 @@ import com.mapswithme.maps.api.MapsWithMeApi;
 
 import org.hisp.dhis.android.sdk.R;
 import org.hisp.dhis.android.sdk.controllers.GpsController;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
 import org.hisp.dhis.android.sdk.ui.activities.OfflineMapHandler;
 import org.hisp.dhis.android.sdk.ui.fragments.dataentry.MapsFragment;
@@ -28,12 +29,14 @@ public class MapsSelectionFragment extends DialogFragment {
     private Activity context;
     private EditText mLatitude = null;
     private EditText mLongitude = null;
+    private Event mEvent;
     protected INavigationHandler mNavigationHandler;
 
-    public static MapsSelectionFragment newInstance(EditText lat, EditText lng){
+    public static MapsSelectionFragment newInstance(EditText lat, EditText lng, Event event){
         MapsSelectionFragment mapSelectDialog = new MapsSelectionFragment();
         mapSelectDialog.mLatitude = lat;
         mapSelectDialog.mLongitude = lng;
+        mapSelectDialog.mEvent = event;
         return mapSelectDialog;
     }
 
@@ -87,7 +90,8 @@ public class MapsSelectionFragment extends DialogFragment {
                             points[j] = new MWMPoint(10 + j, 40, "Bathlazar palace #" + j, "" + j);
                         }
 //                        MapsWithMeApi.pickPoint(getActivity(), "Select point", pi);
-                        MapsWithMeApi.showPointsOnMap(getActivity(), "Pick one", ref.getPendingIntent(), points);
+                        MapsWithMeApi.showPointsOnMap(getActivity(), "Pick one",
+                                ref.getPendingIntent(mEvent), points);
                     } else {
                         // error
                     }
