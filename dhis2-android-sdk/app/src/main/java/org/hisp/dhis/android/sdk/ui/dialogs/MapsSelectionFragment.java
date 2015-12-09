@@ -83,15 +83,9 @@ public class MapsSelectionFragment extends DialogFragment {
                     if(MapsWithMeApi.isMapsWithMeInstalled(context)) {
                         OfflineMapHandler ref = (OfflineMapHandler) getActivity();
                         // launch as normal
-                        Location location = GpsController.getLocation();
-                        String name = "Current Location";
                         MWMPoint points[] = new MWMPoint[10];
-                        for(int j = 0; j < points.length; j++) {
-                            points[j] = new MWMPoint(10 + j, 40, "Bathlazar palace #" + j, "" + j);
-                        }
-//                        MapsWithMeApi.pickPoint(getActivity(), "Select point", pi);
-                        MapsWithMeApi.showPointsOnMap(getActivity(), "Pick one",
-                                ref.getPendingIntent(mEvent), points);
+                        MapsWithMeApi.pickPoint(getActivity(), getResources()
+                                .getString(R.string.select_location), ref.getPendingIntent(getActivity(), mEvent));
                     } else {
                         // error
                     }

@@ -30,6 +30,7 @@
 package org.hisp.dhis.android.eventcapture;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,6 +38,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.mapswithme.maps.api.MWMResponse;
 
@@ -58,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
     public final static String TAG = MainActivity.class.getSimpleName();
     public static String EXTRA_FROM_MWM = "from-maps-with-me";
     public static String EXTRA_EVENT_ID = "event-id";
-    private long lastEventId;
     private OnBackPressedListener mBackPressedListener;
 
     @Override
@@ -81,10 +82,6 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
 
         PeriodicSynchronizerController.activatePeriodicSynchronizer(this);
         showSelectProgramFragment();
-
-        if(savedInstanceState != null) {
-            lastEventId = savedInstanceState.getLong(EXTRA_EVENT_ID, 0L);
-        }
 
         handleIntent(getIntent());
     }
@@ -166,11 +163,11 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
     }
 
     @Override
-    public PendingIntent getPendingIntent(Event event) {
-        final Intent i = new Intent(MainActivity.this, MainActivity.class);
-        lastEventId = event.getLocalId();
+    public PendingIntent getPendingIntent(Context context, Event event) {
+        Intent i = new Intent(context, MainActivity.class);
         i.putExtra(EXTRA_FROM_MWM, true);
-        return PendingIntent.getActivity(MainActivity.this, 0, i, 0);
+        i.putExtra(EXTRA_EVENT_ID, event.getLocalId());
+        return PendingIntent.getActivity(context, 0, i, 0);
     }
 
     @Override
@@ -181,19 +178,16 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
 
     private void handleIntent(Intent intent) {
         if(intent.getBooleanExtra(EXTRA_FROM_MWM, false)) {
-            System.out.println(intent.getExtras().toString());
-            // TODO: add event info to bundle
-            System.out.println("Last event ID is " + lastEventId);
-            System.out.println("Last event ID is " + lastEventId);
-            System.out.println("Last event ID is " + lastEventId);
-            System.out.println("Last event ID is " + lastEventId);
+//            System.out.println(intent.getExtras().toString());
             final MWMResponse response = MWMResponse.extractFromIntent(this, intent);
-//            Event event = TrackerController.getEvent(intent.getLongExtra(EXTRA_EVENT_ID, 0L));
+            Event event = TrackerController.getEvent(intent.getLongExtra(EXTRA_EVENT_ID, 0L));
             double lat = response.getPoint().getLat();
             double lon = response.getPoint().getLon();
-//            event.setLatitude(lat);
-//            event.setLongitude(lon);
-//            event.save();
+            event.setLatitude(lat);
+            event.setLongitude(lon);
+            event.save();
+
+            Toast.makeText(this, R.string.coordinates_updated, Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -31,7 +31,7 @@ import android.view.Window;
 
 import com.mapwithme.maps.api.R;
 
-public class DownloadMapsWithMeDialog extends Dialog implements android.view.View.OnClickListener
+public class DownloadMapsWithMeDialog extends Dialog implements View.OnClickListener
 {
 
   public DownloadMapsWithMeDialog(Activity activity)

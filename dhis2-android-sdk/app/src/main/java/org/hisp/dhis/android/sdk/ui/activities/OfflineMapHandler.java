@@ -1,9 +1,10 @@
 package org.hisp.dhis.android.sdk.ui.activities;
 
 import android.app.PendingIntent;
+import android.content.Context;
 
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 public interface OfflineMapHandler {
-    PendingIntent getPendingIntent(Event event);
+    PendingIntent getPendingIntent(Context context, Event event);
 }

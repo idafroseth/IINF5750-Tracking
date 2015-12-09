@@ -37,4 +37,6 @@
     <string name="status_offline_description">This item has not yet been synchronized with the server.</string>
     <string name="status_error_description">Something went wrong. Please, try to re-upload event or contact administrator.</string>
 
+    <string name="coordinates_updated">updated coordinates for event</string>
+
 </resources>
