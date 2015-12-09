@@ -14,11 +14,13 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 
+import com.mapswithme.maps.api.MWMPoint;
 import com.mapswithme.maps.api.MapsWithMeApi;
 
 import org.hisp.dhis.android.sdk.R;
 import org.hisp.dhis.android.sdk.controllers.GpsController;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
+import org.hisp.dhis.android.sdk.ui.activities.OfflineMapHandler;
 import org.hisp.dhis.android.sdk.ui.fragments.dataentry.MapsFragment;
 
 public class MapsSelectionFragment extends DialogFragment {
@@ -76,14 +78,16 @@ public class MapsSelectionFragment extends DialogFragment {
                 } else if(i == R.id.dialog_fragment_select_offline) {
                     // launch Maps.ME fragment from here
                     if(MapsWithMeApi.isMapsWithMeInstalled(context)) {
+                        OfflineMapHandler ref = (OfflineMapHandler) getActivity();
                         // launch as normal
                         Location location = GpsController.getLocation();
                         String name = "Current Location";
-                        Intent intent = new Intent(context, MapsSelectionFragment.class);
-                        PendingIntent pi = PendingIntent.getActivity(context, 3, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        MapsWithMeApi.pickPoint(getActivity(), "Select point", pi);
-//                        MapsWithMeApi.showPointOnMap(getActivity(), location.getLatitude(),
-//                                location.getLongitude(), name);
+                        MWMPoint points[] = new MWMPoint[10];
+                        for(int j = 0; j < points.length; j++) {
+                            points[j] = new MWMPoint(10 + j, 40, "Bathlazar palace #" + j, "" + j);
+                        }
+//                        MapsWithMeApi.pickPoint(getActivity(), "Select point", pi);
+                        MapsWithMeApi.showPointsOnMap(getActivity(), "Pick one", ref.getPendingIntent(), points);
                     } else {
                         // error
                     }
