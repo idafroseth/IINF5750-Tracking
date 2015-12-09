@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.hisp.dhis.android.sdk.R;
+import org.hisp.dhis.android.sdk.controllers.DhisController;
 import org.hisp.dhis.android.sdk.controllers.GpsController;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
 import org.json.JSONArray;
@@ -280,11 +281,11 @@ public class MapsFragment extends Fragment {
         protected JSONObject doInBackground(String... params) {
             try {
                 // Open a stream from the URL
-
-                HttpRequest request = HttpRequest.get(url).contentType("application/json").basic("admin","district");
+                String userName = DhisController.getInstance().getSession().getCredentials().getUsername();
+                String passWord = DhisController.getInstance().getSession().getCredentials().getPassword();
+                HttpRequest request = HttpRequest.get(url).contentType("application/json").basic(userName,passWord);
                 String jsonStr = request.body();
-                //  InputStream stream = new URL(params[0]).openStream();
-                System.out.println("Its done");
+
                 // Convert result to JSONObject
                 return new JSONObject(jsonStr.toString());
             } catch (Exception e) {
@@ -314,7 +315,7 @@ public class MapsFragment extends Fragment {
                        **/
                         Double lat = Double.parseDouble(jsonObj.getJSONObject("coordinate").getString("latitude"));
                         Double lng = Double.parseDouble(jsonObj.getJSONObject("coordinate").getString("longitude"));
-                        System.out.println("JSON LAT LONG" + lat +"," +lng);
+                      //  System.out.println("JSON LAT LONG" + lat +"," +lng);
                         if(lat!=0.0 &&lng!=0.0) {
                             googleMap.addMarker(new MarkerOptions()
                                             .title("Registered Events-" + jsonObj.getString("event"))
