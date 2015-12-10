@@ -54,6 +54,7 @@ import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
+import org.hisp.dhis.android.sdk.ui.activities.OfflineMapHandler;
 import org.hisp.dhis.android.sdk.ui.adapters.AbsAdapter;
 import org.hisp.dhis.android.sdk.ui.dialogs.AutoCompleteDialogFragment;
 import org.hisp.dhis.android.sdk.ui.dialogs.OrgUnitDialogFragment;
@@ -330,6 +331,11 @@ public abstract class SelectProgramFragment extends Fragment
         mPrefs.putOrgUnit(new Pair<>(orgUnitId, orgUnitLabel));
         mPrefs.putProgram(null);
 
+        if(getActivity() instanceof OfflineMapHandler) {
+            OfflineMapHandler omh = (OfflineMapHandler) getActivity();
+            omh.updateOrgUnitId(orgUnitId);
+        }
+
         handleViews(0);
     }
 
@@ -338,6 +344,12 @@ public abstract class SelectProgramFragment extends Fragment
 
         mState.setProgram(programId, programName);
         mPrefs.putProgram(new Pair<>(programId, programName));
+
+        if(getActivity() instanceof OfflineMapHandler) {
+            OfflineMapHandler omh = (OfflineMapHandler) getActivity();
+            omh.updateProgramId(programId);
+        }
+
         handleViews(1);
 
         mProgressBar.setVisibility(View.VISIBLE);
