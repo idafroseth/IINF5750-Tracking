@@ -19,10 +19,14 @@ import com.mapswithme.maps.api.MapsWithMeApi;
 
 import org.hisp.dhis.android.sdk.R;
 import org.hisp.dhis.android.sdk.controllers.GpsController;
+import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.ui.activities.INavigationHandler;
 import org.hisp.dhis.android.sdk.ui.activities.OfflineMapHandler;
 import org.hisp.dhis.android.sdk.ui.fragments.dataentry.MapsFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsSelectionFragment extends DialogFragment {
     private static final String TAG = MapsSelectionFragment.class.getSimpleName();
@@ -83,9 +87,25 @@ public class MapsSelectionFragment extends DialogFragment {
                     if(MapsWithMeApi.isMapsWithMeInstalled(context)) {
                         OfflineMapHandler ref = (OfflineMapHandler) getActivity();
                         // launch as normal
-                        MWMPoint points[] = new MWMPoint[10];
-                        MapsWithMeApi.pickPoint(getActivity(), getResources()
-                                .getString(R.string.select_location), ref.getPendingIntent(getActivity(), mEvent));
+                        List<MWMPoint> points = new ArrayList<>();
+                        Location location = GpsController.getLocation();
+                        points.add(new MWMPoint(location.getLatitude(), location.getLongitude(),
+                                getResources().getString(R.string.current_location),
+                                getResources().getString(R.string.current_location)));
+                        List<Event> events = TrackerController.getEvents(ref.getOrgUnitId(),
+                                ref.getProgramId());
+
+                        for(Event e: events) {
+                            if(e.getLatitude() != null && e.getLongitude() != null) {
+                                points.add(new MWMPoint(e.getLatitude(), e.getLongitude(), e.getUid(),
+                                        "" + e.getLocalId()));
+                            }
+                        }
+
+                        MWMPoint[] arPoints = points.toArray(new MWMPoint[points.size()]);
+                        MapsWithMeApi.showPointsOnMap(getActivity(), getResources()
+                                .getString(R.string.select_location), ref.getPendingIntent(
+                                getActivity(), mEvent), arPoints);
                     } else {
                         // error
                     }

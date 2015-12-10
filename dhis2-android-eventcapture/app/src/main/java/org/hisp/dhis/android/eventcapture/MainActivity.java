@@ -33,6 +33,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -58,9 +59,20 @@ import org.hisp.dhis.android.sdk.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity implements INavigationHandler, OfflineMapHandler {
     public final static String TAG = MainActivity.class.getSimpleName();
+    public final static String PROGRAM_ID = "program-id";
+    public final static String ORGUNIT_ID = "org-unit-id";
     public static String EXTRA_FROM_MWM = "from-maps-with-me";
     public static String EXTRA_EVENT_ID = "event-id";
     private OnBackPressedListener mBackPressedListener;
+    private String programId;
+    private String orgUnitId;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putString(PROGRAM_ID, programId);
+        outState.putString(ORGUNIT_ID, orgUnitId);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +94,11 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
 
         PeriodicSynchronizerController.activatePeriodicSynchronizer(this);
         showSelectProgramFragment();
+
+        if(savedInstanceState != null) {
+            programId = savedInstanceState.getString(PROGRAM_ID, null);
+            orgUnitId = savedInstanceState.getString(ORGUNIT_ID, null);
+        }
 
         handleIntent(getIntent());
     }
@@ -168,6 +185,26 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
         i.putExtra(EXTRA_FROM_MWM, true);
         i.putExtra(EXTRA_EVENT_ID, event.getLocalId());
         return PendingIntent.getActivity(context, 0, i, 0);
+    }
+
+    @Override
+    public void updateProgramId(String programId) {
+        this.programId = programId;
+    }
+
+    @Override
+    public void updateOrgUnitId(String orgUnitId) {
+        this.orgUnitId = orgUnitId;
+    }
+
+    @Override
+    public String getProgramId() {
+        return programId;
+    }
+
+    @Override
+    public String getOrgUnitId() {
+        return orgUnitId;
     }
 
     @Override

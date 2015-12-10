@@ -7,4 +7,8 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 public interface OfflineMapHandler {
     PendingIntent getPendingIntent(Context context, Event event);
+    void updateProgramId(String programId);
+    void updateOrgUnitId(String orgUnitId);
+    String getProgramId();
+    String getOrgUnitId();
 }

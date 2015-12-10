@@ -131,7 +131,8 @@ public final class MapsWithMeApi
                                     .setTitle(title)
                                     .setZoomLevel(zoomLevel)
                                     .setPendingIntent(pendingIntent)
-                                    .setPoints(points);
+                                    .setPoints(points)
+                                    .setPickPointMode(true); // added point pick mode from pickPoint
     sendRequest(caller, request);
   }
 
